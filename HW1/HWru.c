@@ -5,5 +5,5 @@ int main(void)
 {
     setlocale(LC_ALL, "");
     printf("Привет мир!\n");
-    return 1;
+    return 0;
 }
