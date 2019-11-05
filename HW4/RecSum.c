@@ -1,26 +1,28 @@
 #include <stdio.h>
 
-int intSum(int var1, int var2);
+int intSum(int day, int month, int year);
 
 int main(void)
 {
     printf("Input a date of birth in dd.mm.yyyy format:");
     int dOfBirth = 0, mOfBirth = 0, yOfBirth = 0;
     scanf("%d.%d.%d", &dOfBirth, &mOfBirth, &yOfBirth);
-    printf("%d\n", intSum(intSum(dOfBirth, mOfBirth),yOfBirth));
+    printf("%d\n", intSum(dOfBirth, mOfBirth, yOfBirth));
     return 1;
 }
 
-int intSum(int var1, int var2)
+int intSum(int day, int month, int year)
 {
-    if(!var1) 
+    if(!(day||month)) 
     {
-        return var2;
+        return year;
     }
     else
     {
-    
-        return intSum(--var1,++var2);
+    	if(day)
+            return intSum(--day, month,++year);
+        else
+            return intSum(day, --month,++year);
     }
     
 }
