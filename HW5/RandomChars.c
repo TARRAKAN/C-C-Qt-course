@@ -14,10 +14,10 @@ int main(void)
         printf("array[%d]=", i);
 
         if(array[i]=='\n')
-            printf("\'\\ n\'\n"); //change '\n' chars to "\n" strings
+            printf("\'\\n\'\n"); //change '\n' chars to "\n" strings
 
         else if(array[i]=='\t')
-            printf("\'\\ t\'\n"); //change '\t' chars to "\t" strings
+            printf("\'\\t\'\n"); //change '\t' chars to "\t" strings
 
         else
             printf("\'%c\'\n", array[i]); //print regular chars
