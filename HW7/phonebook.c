@@ -9,14 +9,17 @@ struct nameNumber
 
 int main(void)
 {
-    printf("~What do you want?~\n");
+    printf("~HI! What do you want, my friend?~\n");
+    printf("Print \"info\" to show the user's manual.\n");
     printf("Print \"add\" to add a name and a number.\n");
-    printf("Print \"print\" to print all names and numbers added in the phonebook.\n");
+    printf("Print \"remove\" ro remove a name and a number.\n");
     printf("Print \"search\" to search a number in the phonebook.\n");
-    printf("Print \"exit\" to close the ~*GNU LIBRE SUPER MEGA iPhOnEbOoK v1.123123 alpha*~\n");
+    printf("Print \"print\" to print all names and numbers added in the phonebook.\n");
+    printf("Print \"exit\" to close ~*GNU LIBRE SUPER MEGA PhOnEbOoK PRO v1.123123 alpha*~\n");
     char options[7] = "abcdef\0";
     while(strcmp(options, "exit"))
     {
+        printf("(PB)");
         scanf("%s", options);
         if(!strcmp(options, "add"))// add contacts in the phonebook 
         {
@@ -33,6 +36,7 @@ int main(void)
             }
             fclose(file);
             printf("DONE!\n");
+            fclose(file);
         }
         else if(!strcmp(options, "print"))// print the phonebook
         {
@@ -49,6 +53,7 @@ int main(void)
             }
             else
             printf("  ~IS EMPTY~\n");
+        fclose(file);
         }
         else if(!strcmp(options, "search"))// search
         {
@@ -72,6 +77,43 @@ int main(void)
             }
             else
                 printf("~YOUR PHONEBOOK~\n  ~IS EMPTY~\n");
+            fclose(file);
+        }
+        else if(!strcmp(options, "remove"))
+        {
+            char rStr[102];
+            printf("Input a name:");
+            scanf("%s", rStr);
+            char rNumber[50];
+            printf("Input a number:");
+            scanf("%s", rNumber);
+            strcat(rStr," - ");
+            strcat(rStr, rNumber);
+            strcat(rStr, "\n");
+            FILE *file, *tFile;
+            file = fopen("file.txt", "r");
+            tFile = fopen("tFile.txt", "w");
+            if(file&&tFile)
+            {
+                char ch[102];
+                while(fgets (ch, 102 , file) != NULL)
+                {
+                    if(strcmp(ch, rStr))
+                        fprintf(tFile, "%s", ch);
+                }
+            }
+            remove("file.txt");
+            rename("tFile.txt", "file.txt");
+            fclose(file);
+            fclose(tFile);
+        }
+        else if(!strcmp(options, "info"))
+        {
+            printf("Print \"add\" to add a name and a number.\n");
+            printf("Print \"remove\" ro remove a name and a number.\n");
+            printf("Print \"search\" to search a number in the phonebook.\n");
+            printf("Print \"print\" to print all names and numbers added in the phonebook.\n");
+            printf("Print \"exit\" to close ~*GNU LIBRE SUPER MEGA iPhOnEbOoK v1.123123 alpha*~\n");    
         }
     }
         return 0;
