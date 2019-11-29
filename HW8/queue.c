@@ -34,8 +34,8 @@ void init(struct steck *pSteck)
     pSteck->top = 0;
     for(int i = 0; i<=9; i++)
     {
-    strcpy(pSteck->tasks[i].name, "");
-    pSteck->tasks[i].time = 0;    
+    	strcpy(pSteck->tasks[i].name, "");
+    	pSteck->tasks[i].time = 0;    
     }
 }
 
@@ -44,11 +44,14 @@ void pop(struct steck *pSteck)
 {
     if(pSteck->top>0)
     {
-        printf("~Task \"%s\" poped~\n", pSteck->tasks[pSteck->top-1].name);
-        strcpy(pSteck->tasks[pSteck->top-1].name,"");
-        pSteck->tasks[pSteck->top-1].time = 0;
-        pSteck->top--;
-        
+	printf("~Task \"%s\" poped~\n", pSteck->tasks[0].name);
+        for(int i = 0; i < pSteck->top; i++)
+        {
+            strcpy(pSteck->tasks[i].name, pSteck->tasks[i+1].name);
+            pSteck->tasks[i].time = pSteck->tasks[i+1].time;
+            
+        }
+	pSteck->top--;
     }
     else
         printf("Steck is empty!\n");
@@ -60,8 +63,8 @@ void pickleRick(struct steck *pSteck)
 {
     if(pSteck->top>0)
     {
-    printf("Name: %s\n", pSteck->tasks[pSteck->top-1].name);
-    printf("Time: %d\n", pSteck->tasks[pSteck->top-1].time);
+    printf("Name: %s\n", pSteck->tasks[0].name);
+    printf("Time: %d\n", pSteck->tasks[0].time);
     }
     else
         printf("Steck is empty!\n");
@@ -79,7 +82,7 @@ int main(void)
     struct steck nSteck;
     init(&nSteck);
     char opt[10] = "HiHi\0";
-    printf(">flood - add few tasks\n");
+    printf(">flood - add few tasks\n");   
     printf(">start - pop all tasks\n");
     int sizeOfSteck = 0;
     while(strcmp(opt,"exit"))
@@ -88,11 +91,13 @@ int main(void)
         scanf("%s", opt);
         if(!strcmp(opt,"flood"))
         {
+            printf("Number of tasks in queue now: %d\n", nSteck.top);
             int canAdd = 10 - nSteck.top;
             printf("Input size(%d - MAX):", canAdd);
             scanf("%d", &sizeOfSteck);
-            printf("random or manual?\n>>");
+            printf("random or manual?\n");
             scanf("%s", opt);
+            
             if(!strcmp(opt, "manual"))
             {
                 for(int i = 1; (i <= sizeOfSteck)&&(i <= canAdd); i++)
@@ -109,16 +114,17 @@ int main(void)
             }
             else if(!strcmp(opt, "random"))
             {
-                srand(time(NULL));
-                for(int i = 1; (i <= sizeOfSteck)&&(i<= canAdd); i++)
+		        srand(time(NULL));
+                for(int i = 1; (i <= sizeOfSteck)&&(i <= canAdd); i++)
                 {
-                    printf("Task №%d\n", nSteck.top+1);
+                    printf("Task №%d ", nSteck.top+1);
                     int iTime = 1 + random() % 5;
                     char iName[10];
                     for(int j = 0; j < 10; j++)
-                        iName[j] = 65 + random() % (123 - 65);
+                        iName[j] = 65 + random() % (123 - 65);      
                     push(&nSteck, iName, iTime);
-                    pickleRick(&nSteck);
+                    printf("Name: %s\n", nSteck.tasks[i-1].name);
+                    printf("Time: %d\n", nSteck.tasks[i-1].time);
                 }
             }
             else
@@ -127,18 +133,17 @@ int main(void)
         }
         else if(!strcmp(opt,"start"))
         {
+            int sTop = nSteck.top;
             if(sizeOfSteck!=0)
             {
-                sizeOfSteck = nSteck.top;
-                for(int i = 1; i<=sizeOfSteck; i++)
+                for(int i = 1; i<=sTop; i++)
                 {
-                timer(nSteck.tasks[nSteck.top-1].time);
+                timer(nSteck.tasks[0].time);
                 pop(&nSteck);
                 }
             }
             pop(&nSteck);
-        }
-        
+        }       
     }
     return 0;
 }
